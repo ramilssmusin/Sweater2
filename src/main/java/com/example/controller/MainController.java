@@ -24,7 +24,7 @@ public class MainController {
     }
 
     @GetMapping("/main")
-    public String main(@RequestParam(required = false) String filter, Model model) {
+    public String main(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
         Iterable<Message> messages = messageRepo.findAll();
 
         if (filter != null && !filter.isEmpty()) {
@@ -43,7 +43,8 @@ public class MainController {
     public String add(
             @AuthenticationPrincipal User user,
             @RequestParam String text,
-            @RequestParam String tag, Map<String, Object> model) {
+            @RequestParam String tag, Map<String, Object> model
+    ) {
         Message message = new Message(text, tag, user);
 
         messageRepo.save(message);
@@ -54,5 +55,4 @@ public class MainController {
 
         return "main";
     }
-
 }
