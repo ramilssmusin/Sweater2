@@ -40,6 +40,7 @@ public class UserSevice implements UserDetailsService {
         return user;
     }
 
+    @Autowired
     public UserSevice(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
