@@ -23,8 +23,11 @@ public class UserSevice implements UserDetailsService {
     @Autowired
     private MailSender mailSender;
 
-    @Autowired
+    /*@Autowired
     private PasswordEncoder passwordEncoder;
+
+     */
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -35,6 +38,10 @@ public class UserSevice implements UserDetailsService {
         }
 
         return user;
+    }
+
+    public UserSevice(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 
     public boolean addUser(User user) {
