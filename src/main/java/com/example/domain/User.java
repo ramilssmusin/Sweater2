@@ -33,6 +33,7 @@ public class User implements UserDetails {
     private Set<Role> roles;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OrderBy("id desc ")
     private Set<Message> messages;
 
     @Override

@@ -4,6 +4,9 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.Date;
 
 @Entity
 public class Message {
@@ -22,6 +25,10 @@ public class Message {
     private User author;
 
     private String filename;
+
+    private String tag2;
+
+    private Date created;
 
     public Message() {
     }
@@ -74,5 +81,30 @@ public class Message {
 
     public void setFilename(String filename) {
         this.filename = filename;
+    }
+
+    public String getTag2() {
+        if (tag2==null) {
+            return "12:00 - 1 Nov 19";
+        }
+        return tag2;
+    }
+
+    public void setTag2(Date tag2) {
+        String pattern = "HH:mm - d MMMMM yy";
+        SimpleDateFormat simpleDateFormat =new SimpleDateFormat(pattern, new Locale("us", "US"));
+        this.tag2 = simpleDateFormat.format(new Date());
+    }
+
+    public Date getCreated() {
+        if (created==null) {
+            Date date = new Date(0, 0, 0);
+            return date;
+        }
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
     }
 }

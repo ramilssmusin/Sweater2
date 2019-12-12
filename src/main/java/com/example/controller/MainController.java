@@ -5,6 +5,8 @@ import com.example.domain.User;
 import com.example.repos.MessageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,9 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Controller
 public class MainController {
@@ -41,9 +42,9 @@ public class MainController {
         Iterable<Message> messages = messageRepo.findAll();
 
         if (filter != null && !filter.isEmpty()) {
-            messages = messageRepo.findByTag(filter);
+            messages = messageRepo.findByTagOrderByIdDesc(filter);
         } else {
-            messages = messageRepo.findAll();
+            messages = messageRepo.findByOrderByIdDesc();
         }
 
         model.addAttribute("messages", messages);
@@ -61,6 +62,9 @@ public class MainController {
             @RequestParam("file") MultipartFile file
     ) throws IOException {
         message.setAuthor(user);
+        Date date = new Date();
+        message.setCreated(date);
+        message.setTag2(date);
 
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
@@ -75,7 +79,7 @@ public class MainController {
             messageRepo.save(message);
         }
 
-        Iterable<Message> messages = messageRepo.findAll();
+        Iterable<Message> messages = messageRepo.findByOrderByIdDesc();
 
         model.addAttribute("messages", messages);
 
