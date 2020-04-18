@@ -1,6 +1,6 @@
 package com.example.config;
 
-import com.example.service.UserSevice;
+import com.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private UserSevice userSevice;
+    private UserService userService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -48,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userSevice)
+        auth.userDetailsService(userService)
                 .passwordEncoder(passwordEncoder);
     }
 }

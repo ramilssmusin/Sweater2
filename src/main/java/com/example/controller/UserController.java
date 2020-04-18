@@ -2,7 +2,7 @@ package com.example.controller;
 
 import com.example.domain.Role;
 import com.example.domain.User;
-import com.example.service.UserSevice;
+import com.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,12 +16,12 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController {
     @Autowired
-    private UserSevice userSevice;
+    private UserService userService;
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public String userList(Model model) {
-        model.addAttribute("users", userSevice.findAll());
+        model.addAttribute("users", userService.findAll());
         return "userList";
     }
 
@@ -41,7 +41,7 @@ public class UserController {
             @RequestParam Map<String, String> form,
             @RequestParam("userId") User user
     ) {
-        userSevice.saveUser(user, username, form);
+        userService.saveUser(user, username, form);
 
         return "redirect:/user";
     }
@@ -60,7 +60,7 @@ public class UserController {
             @RequestParam String password,
             @RequestParam String email
     ) {
-        userSevice.updateProfile(user, password, email);
+        userService.updateProfile(user, password, email);
 
         return "redirect:/user/profile";
     }
@@ -70,7 +70,7 @@ public class UserController {
             @AuthenticationPrincipal User currentUser,
             @PathVariable User user
     ) {
-        userSevice.subscribe(currentUser, user);
+        userService.subscribe(currentUser, user);
 
         return "redirect:/user-messages/" + user.getId();
     }
@@ -80,7 +80,7 @@ public class UserController {
             @AuthenticationPrincipal User currentUser,
             @PathVariable User user
     ) {
-        userSevice.unsubscribe(currentUser, user);
+        userService.unsubscribe(currentUser, user);
 
         return "redirect:/user-messages/" + user.getId();
     }
